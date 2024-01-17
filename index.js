@@ -68,7 +68,8 @@ const questions = [
     'a': 'Adding flavor to a dish',
     'b': 'Grilling meat to perfection',
     'c': 'Preserving food',
-    'd': 'Partially cooking a food item, usually vegetables, and then rapidly cooling it in ice water',
+    'd': `Partially cooking a food item,  
+    usually vegetables and rapidly cooling it in ice water`,
     'correct' : 'd'
   },
   {
@@ -128,6 +129,21 @@ let wrong = 0;
 const quesBox = document.getElementById("quesBox")
 const optionInputs =document.querySelectorAll(".options")
 
+const startingMinutes = 1;
+let time =startingMinutes * 60;
+let refreshIntervalId = setInterval(updateCountdown,1000)
+const countdownEl= document.getElementById("countdown");
+// setInterval(updateCountdown, 1000);
+function updateCountdown(){
+  const minutes = Math.floor(time/60);
+  let seconds = time %60;
+  seconds =  seconds < 10 ? `0` + seconds : seconds;
+  countdownEl.innerHTML = `${minutes}: ${seconds}`;
+  time--;
+  if (time < 0) { //stop the setInterval whe time = 0 for avoid negative time
+    clearInterval(refreshIntervalId);
+}
+}
 
 
 const loadQuestion = () => {
@@ -136,7 +152,7 @@ const loadQuestion = () => {
   }
   reset();
   const data = questions[index];
-  quesBox.innerText = `${index+1} ${data.que}`;
+  quesBox.innerText = `${index+1+")"} ${data.que}`;
   optionInputs[0].nextElementSibling.innerHTML = data.a;
   optionInputs[1].nextElementSibling.innerHTML = data.b;
   optionInputs[2].nextElementSibling.innerHTML = data.c;
@@ -178,8 +194,8 @@ const reset =() =>{
 
 const endQuiz = () =>{
    document.getElementById("box").innerHTML = `
-   <h3> Thank you for playing the quiz </h3>
-   <h2> ${right} / ${total} are correct </h2>
+   <h1> Thank you for playing the quiz!!! </h1>
+   <h2> You scored ${right} / ${total} ! </h2>
    `
 }
 loadQuestion();
